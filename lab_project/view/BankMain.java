@@ -298,7 +298,7 @@ OnBankDepositListener, OnInsertAccountListener {
                             "Warning", 
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    
+                    ChangePasswordFrame.newChangePasswordFrame(loginId);
                 }
                 
             }
