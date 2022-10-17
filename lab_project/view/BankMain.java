@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -164,7 +165,7 @@ OnBankDepositListener, OnInsertAccountListener {
             }
         });
         btnDeposit.setFont(new Font("굴림", Font.PLAIN, 20));
-        btnDeposit.setBounds(12, 80, 145, 60);
+        btnDeposit.setBounds(12, 80, 125, 60);
         frame.getContentPane().add(btnDeposit);
         
         JButton btnSignUp = new JButton("회원가입");
@@ -181,8 +182,8 @@ OnBankDepositListener, OnInsertAccountListener {
                 }
             }
         });
-        btnSignUp.setFont(new Font("굴림", Font.PLAIN, 20));
-        btnSignUp.setBounds(201, 80, 145, 60);
+        btnSignUp.setFont(new Font("굴림", Font.PLAIN, 18));
+        btnSignUp.setBounds(149, 80, 113, 60);
         frame.getContentPane().add(btnSignUp);
         
         JButton btnInsertAccount = new JButton("계좌 등록");
@@ -199,8 +200,8 @@ OnBankDepositListener, OnInsertAccountListener {
                 }
             }
         });
-        btnInsertAccount.setFont(new Font("굴림", Font.PLAIN, 20));
-        btnInsertAccount.setBounds(387, 80, 145, 60);
+        btnInsertAccount.setFont(new Font("굴림", Font.PLAIN, 18));
+        btnInsertAccount.setBounds(274, 80, 119, 60);
         frame.getContentPane().add(btnInsertAccount);
         
         JButton btnSelectAllMember = new JButton("회원 전체보기");
@@ -236,8 +237,146 @@ OnBankDepositListener, OnInsertAccountListener {
             }
         });
         btnSelectAllAccount.setFont(new Font("굴림", Font.PLAIN, 14));
-        btnSelectAllAccount.setBounds(150, 150, 125, 60);
+        btnSelectAllAccount.setBounds(149, 150, 125, 60);
         frame.getContentPane().add(btnSelectAllAccount);
+        
+        JButton btnDeleteMember = new JButton("회원 탈퇴");
+        btnDeleteMember.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(checkLogin())) {
+                    JOptionPane.showMessageDialog(frame,
+                            "먼저 로그인 하세요.",
+                            "Warning", 
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (isManager()) {
+                    JOptionPane.showMessageDialog(frame,
+                            "manager계정은 삭제할 수 없습니다!",
+                            "Warning", 
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    showMemberDeleteFrame();
+                    
+                }
+            }
+        });
+        btnDeleteMember.setFont(new Font("굴림", Font.PLAIN, 14));
+        btnDeleteMember.setBounds(287, 150, 100, 60);
+        frame.getContentPane().add(btnDeleteMember);
+        
+        JButton btnDeleteAccount = new JButton("계좌 삭제");
+        btnDeleteAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(checkLogin())) {
+                    JOptionPane.showMessageDialog(frame,
+                            "먼저 로그인 하세요.",
+                            "Warning", 
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (isManager()) {
+                    JOptionPane.showMessageDialog(frame,
+                            "manager계정은 삭제할 수 없습니다!",
+                            "Warning", 
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    showBankDeleteFrame();
+                    
+                }
+            }
+        });
+        btnDeleteAccount.setFont(new Font("굴림", Font.PLAIN, 14));
+        btnDeleteAccount.setBounds(407, 150, 106, 60);
+        frame.getContentPane().add(btnDeleteAccount);
+        
+        JButton btnChangePassword = new JButton("비밀번호 변경");
+        btnChangePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(checkLogin())) {
+                    JOptionPane.showMessageDialog(frame,
+                            "먼저 로그인 하세요.",
+                            "Warning", 
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    
+                }
+                
+            }
+        });
+        btnChangePassword.setFont(new Font("굴림", Font.PLAIN, 15));
+        btnChangePassword.setBounds(405, 80, 127, 60);
+        frame.getContentPane().add(btnChangePassword);
+    }
+    
+    private void showBankDeleteFrame() {
+        int row=table.getSelectedRow();
+        if (row==-1) {
+            JOptionPane.showMessageDialog(frame,
+                    "은행을 먼저 선택하세요.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String accountNum=(String) model.getValueAt(row, 0);
+        Integer balance=(Integer) model.getValueAt(row, 3);
+        
+        if (balance!=0) {
+            JOptionPane.showMessageDialog(frame,
+                    "해당 계좌의 잔액을 0으로 만들어주세요!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            int confirm=JOptionPane.showConfirmDialog(frame, 
+                    "정말 계좌를 삭제 하시겠습니까?", 
+                    "삭제 확인", 
+                    JOptionPane.YES_NO_OPTION);
+            
+            if (confirm==JOptionPane.YES_OPTION) {
+                int result=dao.deleteBank(accountNum);
+                if (result==1) {
+                    JOptionPane.showMessageDialog(frame, "삭제되었습니다.");
+                    initializeTable(loginId);
+                }
+            } else {
+                return ;
+            }
+        }
+    }
+    
+    private void showMemberDeleteFrame() {
+        List<Bank> list=new ArrayList<>();
+        list=dao.selectMemberAccount(loginId);
+        int isAllBalanceZero=1;
+        for (Bank b : list) {
+            if (b.getBalance()!=0) {
+                isAllBalanceZero=0;
+                break;
+            }
+        }
+        if (isAllBalanceZero==0) {
+            JOptionPane.showMessageDialog(frame,
+                    "모든 계좌의 잔액을 0으로 만들어주세요!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            int confirm=JOptionPane.showConfirmDialog(frame, 
+                    "정말 회원을 탈퇴 하시겠습니까?", 
+                    "탈퇴 확인", 
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm==JOptionPane.YES_OPTION) {
+                int result=dao.deleteMember(loginId);
+                int result2=dao.deleteMemberBank(loginId);
+                if (result==1) {
+                    JOptionPane.showMessageDialog(frame, "탈퇴되었습니다.");
+                    loginId="";
+                    initializeTable(loginId);
+                }
+            } else {
+                return ;
+            }
+        }
     }
     
     private void showInsertAccountFrame() {
