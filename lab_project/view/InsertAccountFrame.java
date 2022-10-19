@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -37,15 +38,16 @@ public class InsertAccountFrame extends JFrame {
     private BankDaoImpl dao;
     private List<Bank> bankList;
     private List<String> accountNumList=new ArrayList<>();
+    private Component parent;
 
     /**
      * Launch the application.
      */
-    public static void newInsertAccountFrame(String memberId, OnInsertAccountListener listener) {
+    public static void newInsertAccountFrame(Component parent, String memberId, OnInsertAccountListener listener) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    InsertAccountFrame frame = new InsertAccountFrame(memberId, listener);
+                    InsertAccountFrame frame = new InsertAccountFrame(parent, memberId, listener);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -58,9 +60,10 @@ public class InsertAccountFrame extends JFrame {
      * Create the frame.
      */
     
-    public InsertAccountFrame(String memberId, OnInsertAccountListener listener) {
+    public InsertAccountFrame(Component parent, String memberId, OnInsertAccountListener listener) {
         this.memberId=memberId;
         this.listener=listener;
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         bankList=dao.selectAll();
         for (Bank b : bankList) {
@@ -76,7 +79,9 @@ public class InsertAccountFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 449, 392);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 449, 392);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

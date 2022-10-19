@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -32,15 +33,16 @@ public class SignUpFrame extends JFrame {
     private BankDaoImpl dao;
     private List<Member> memberList;
     private List<String> memberIdList=new ArrayList<>();
+    private Component parent;
 
     /**
      * Launch the application.
      */
-    public static void newSignUpFrame() {
+    public static void newSignUpFrame(Component parent) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    SignUpFrame frame = new SignUpFrame();
+                    SignUpFrame frame = new SignUpFrame(parent);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -53,7 +55,8 @@ public class SignUpFrame extends JFrame {
      * Create the frame.
      */
     
-    public SignUpFrame() {
+    public SignUpFrame(Component parent) {
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         this.memberList=dao.selectAllMember();
         for (Member m : memberList) {
@@ -64,7 +67,9 @@ public class SignUpFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 452, 500);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 452, 500);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

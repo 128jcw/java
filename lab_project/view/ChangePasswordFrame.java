@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -27,15 +28,16 @@ public class ChangePasswordFrame extends JFrame {
     
     private String memberId;
     private BankDaoImpl dao;
+    private Component parent;
 
     /**
      * Launch the application.
      */
-    public static void newChangePasswordFrame(String memberId) {
+    public static void newChangePasswordFrame(Component parent, String memberId) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ChangePasswordFrame frame = new ChangePasswordFrame(memberId);
+                    ChangePasswordFrame frame = new ChangePasswordFrame(parent, memberId);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -48,8 +50,9 @@ public class ChangePasswordFrame extends JFrame {
      * Create the frame.
      */
     
-    public ChangePasswordFrame(String memberId) {
+    public ChangePasswordFrame(Component parent, String memberId) {
         this.memberId=memberId;
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         initialize();
         initializeTable();
@@ -62,7 +65,9 @@ public class ChangePasswordFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 451, 444);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 451, 444);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

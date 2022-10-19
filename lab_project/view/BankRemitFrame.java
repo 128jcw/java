@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -42,17 +43,18 @@ public class BankRemitFrame extends JFrame {
     private OnBankRemitListener listener;
     private String accountNum;
     private Integer balance;
+    private Component parent;
     
     private BankDaoImpl dao;
 
     /**
      * Launch the application.
      */
-    public static void newBankRemitFrame(String accountNum, Integer balance, OnBankRemitListener listener) {
+    public static void newBankRemitFrame(Component parent, String accountNum, Integer balance, OnBankRemitListener listener) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    BankRemitFrame frame = new BankRemitFrame(accountNum, balance, listener);
+                    BankRemitFrame frame = new BankRemitFrame(parent, accountNum, balance, listener);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -65,10 +67,11 @@ public class BankRemitFrame extends JFrame {
      * Create the frame.
      */
     
-    public BankRemitFrame(String accountNum, Integer balance, OnBankRemitListener listener) {
+    public BankRemitFrame(Component parent, String accountNum, Integer balance, OnBankRemitListener listener) {
         this.accountNum=accountNum;
         this.balance=balance;
         this.listener=listener;
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         initialize();
         initializeTable();
@@ -90,7 +93,9 @@ public class BankRemitFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 491, 444);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 491, 444);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

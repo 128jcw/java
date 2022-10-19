@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -26,6 +27,7 @@ public class BankLoginFrame extends JFrame {
     
     private OnBankLoginListener listener;
     private BankDaoImpl dao;
+    private Component parent;
 
     private JPanel contentPane;
     private JTextField textId;
@@ -34,11 +36,11 @@ public class BankLoginFrame extends JFrame {
     /**
      * Launch the application.
      */
-    public static void newBankLoginFrame(OnBankLoginListener listener) {
+    public static void newBankLoginFrame(Component parent, OnBankLoginListener listener) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    BankLoginFrame frame = new BankLoginFrame(listener);
+                    BankLoginFrame frame = new BankLoginFrame(parent, listener);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -50,8 +52,9 @@ public class BankLoginFrame extends JFrame {
     /**
      * Create the frame.
      */
-    public BankLoginFrame(OnBankLoginListener listener) {
+    public BankLoginFrame(Component parent, OnBankLoginListener listener) {
         this.listener=listener;
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         
         initialize();
@@ -59,7 +62,9 @@ public class BankLoginFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 451, 376);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 451, 376);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

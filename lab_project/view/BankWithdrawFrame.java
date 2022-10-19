@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -30,17 +31,18 @@ public class BankWithdrawFrame extends JFrame {
     private OnBankWithdrawListener listener;
     private String accountNum;
     private Integer balance;
+    private Component parent;
     
     private BankDaoImpl dao;
 
     /**
      * Launch the application.
      */
-    public static void newBankWithdrawFrame(String accountNum, Integer balance, OnBankWithdrawListener listener) {
+    public static void newBankWithdrawFrame(Component parent, String accountNum, Integer balance, OnBankWithdrawListener listener) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    BankWithdrawFrame frame = new BankWithdrawFrame(accountNum, balance, listener);
+                    BankWithdrawFrame frame = new BankWithdrawFrame(parent, accountNum, balance, listener);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -53,10 +55,11 @@ public class BankWithdrawFrame extends JFrame {
      * Create the frame.
      */
     
-    public BankWithdrawFrame(String accountNum, Integer balance, OnBankWithdrawListener listener) {
+    public BankWithdrawFrame(Component parent, String accountNum, Integer balance, OnBankWithdrawListener listener) {
         this.accountNum=accountNum;
         this.balance=balance;
         this.listener=listener;
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         initialize();
         initializeText();
@@ -69,7 +72,9 @@ public class BankWithdrawFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 449, 331);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 449, 331);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

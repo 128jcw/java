@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -29,16 +30,17 @@ public class BankDepositFrame extends JFrame {
     
     private BankDaoImpl dao;
     private String accountNum;
+    private Component parent;
     private OnBankDepositListener listener;
 
     /**
      * Launch the application.
      */
-    public static void newBankDepositFrame(String accountNum, OnBankDepositListener listener) {
+    public static void newBankDepositFrame(Component parent, String accountNum, OnBankDepositListener listener) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    BankDepositFrame frame = new BankDepositFrame(accountNum, listener);
+                    BankDepositFrame frame = new BankDepositFrame(parent, accountNum, listener);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -50,9 +52,10 @@ public class BankDepositFrame extends JFrame {
     /**
      * Create the frame.
      */
-    public BankDepositFrame(String accountNum, OnBankDepositListener listener) {
+    public BankDepositFrame(Component parent, String accountNum, OnBankDepositListener listener) {
         this.accountNum=accountNum;
         this.listener=listener;
+        this.parent=parent;
         dao=BankDaoImpl.getInstance();
         initialize();
         initializeText();
@@ -64,7 +67,9 @@ public class BankDepositFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 453, 372);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 453, 372);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

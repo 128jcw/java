@@ -99,7 +99,7 @@ OnBankDepositListener, OnInsertAccountListener {
                 if (checkLogin()) {
                     logout();
                 } else {
-                    BankLoginFrame.newBankLoginFrame(BankMain.this);
+                    BankLoginFrame.newBankLoginFrame(frame, BankMain.this);
                 }
             }
         });
@@ -209,7 +209,7 @@ OnBankDepositListener, OnInsertAccountListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isManager()) {
-                    SelectAllMemberFrame.newSelectAllMemberFrame();
+                    SelectAllMemberFrame.newSelectAllMemberFrame(frame);
                 } else {
                     JOptionPane.showMessageDialog(frame,
                             "manager계정으로 로그인 하세요!",
@@ -227,7 +227,7 @@ OnBankDepositListener, OnInsertAccountListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isManager()) {
-                    SelectAllBankFrame.newSelectAllBankFrame();
+                    SelectAllBankFrame.newSelectAllBankFrame(frame);
                 } else {
                     JOptionPane.showMessageDialog(frame,
                             "manager계정으로 로그인 하세요!",
@@ -298,7 +298,7 @@ OnBankDepositListener, OnInsertAccountListener {
                             "Warning", 
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    ChangePasswordFrame.newChangePasswordFrame(loginId);
+                    ChangePasswordFrame.newChangePasswordFrame(frame, loginId);
                 }
                 
             }
@@ -380,11 +380,11 @@ OnBankDepositListener, OnInsertAccountListener {
     }
     
     private void showInsertAccountFrame() {
-        InsertAccountFrame.newInsertAccountFrame(loginId, BankMain.this);
+        InsertAccountFrame.newInsertAccountFrame(frame, loginId, BankMain.this);
     }
     
     private void showSignUpFrame() {
-        SignUpFrame.newSignUpFrame();
+        SignUpFrame.newSignUpFrame(frame);
     }
     
     private void showDepositFrame() {
@@ -400,7 +400,7 @@ OnBankDepositListener, OnInsertAccountListener {
         
         System.out.println("accountNum = " + accountNum);
         
-        BankDepositFrame.newBankDepositFrame(accountNum, BankMain.this);
+        BankDepositFrame.newBankDepositFrame(frame, accountNum, BankMain.this);
     }
     
     private void showWithdrawFrame() {
@@ -417,7 +417,7 @@ OnBankDepositListener, OnInsertAccountListener {
         
         System.out.println("accountNum = " + accountNum);
         
-        BankWithdrawFrame.newBankWithdrawFrame(accountNum, balance, BankMain.this);
+        BankWithdrawFrame.newBankWithdrawFrame(frame, accountNum, balance, BankMain.this);
     }
     
     private void showRemitFrame() {
@@ -434,7 +434,7 @@ OnBankDepositListener, OnInsertAccountListener {
         
         System.out.println("accountNum = " + accountNum);
         
-        BankRemitFrame.newBankRemitFrame(accountNum, balance, BankMain.this);
+        BankRemitFrame.newBankRemitFrame(frame, accountNum, balance, BankMain.this);
         
     }
     

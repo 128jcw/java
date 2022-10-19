@@ -1,5 +1,6 @@
 package edu.java.project.view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -28,17 +29,18 @@ public class SelectAllBankFrame extends JFrame {
     private JPanel contentPane;
     private JTable table;
     private DefaultTableModel model;
+    private Component parent;
     
     private BankDaoImpl dao;
 
     /**
      * Launch the application.
      */
-    public static void newSelectAllBankFrame() {
+    public static void newSelectAllBankFrame(Component parent) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    SelectAllBankFrame frame = new SelectAllBankFrame();
+                    SelectAllBankFrame frame = new SelectAllBankFrame(parent);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -50,7 +52,8 @@ public class SelectAllBankFrame extends JFrame {
     /**
      * Create the frame.
      */
-    public SelectAllBankFrame() {
+    public SelectAllBankFrame(Component parent) {
+        this.parent=parent;
         this.dao=BankDaoImpl.getInstance();
         initialize();
         initializeTable();
@@ -72,7 +75,9 @@ public class SelectAllBankFrame extends JFrame {
     
     public void initialize() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 559, 579);
+        int x = parent.getX(); // 부모 창의 x 좌표
+        int y = parent.getY();
+        setBounds(x, y, 559, 579);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
